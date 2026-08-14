@@ -1,8 +1,11 @@
 import express from "express";
 import morgan from 'morgan';
 import helmet from 'helmet';
+import { initializeDatabase } from "./configs/data-base";
 
 const app = express();
+
+await initializeDatabase();
 
 app.use(morgan('tiny'));
 
