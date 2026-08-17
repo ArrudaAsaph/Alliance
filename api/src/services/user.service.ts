@@ -35,6 +35,7 @@ export class UserService {
                 this.entity, 
                 action, 
                 "Email já cadastrado", 
+                email
             );
         }
     }
