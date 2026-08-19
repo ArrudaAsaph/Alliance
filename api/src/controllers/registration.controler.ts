@@ -13,7 +13,7 @@ export default class RegistrationController {
                 UserMapper.toEntity(payload.user),
                 payload.user.confirmPassword
             )
-            const ret = UserMapper.toReponse(newUser)
+            const ret = UserMapper.toResponse(newUser)
             res.status(201).json({
                 success: true,
                 ...ret

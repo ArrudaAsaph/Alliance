@@ -5,6 +5,11 @@ export interface CreateUserDTO extends UserInterface {
     confirmPassword: string
 }
 
+export interface UpdateUserDTO {
+    username?: string;
+    email?: string;
+}
+
 export interface UserResponseDTO {
     id: string;
     username: string;

@@ -5,7 +5,6 @@ import type { CreateUserDTO, UserResponseDTO } from "../dtos/user.dto";
 export class UserMapper {
     static toEntity(dto: CreateUserDTO): User {
         const user = new User();
-        console.log(dto)
         user.username = dto.username;
         user.email = dto.email;
         user.password = dto.password;
@@ -14,7 +13,7 @@ export class UserMapper {
     }
 
 
-    static toReponse(user: User):UserResponseDTO  {
+    static toResponse(user: User):UserResponseDTO  {
         return {
             id: user.id,
             username: user.username,
