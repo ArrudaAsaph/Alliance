@@ -1,5 +1,4 @@
 import { AppDataSource,initializeDatabase } from "../data-base";
-import mongo from "./mongo";
 
 function validateEnvironment(): void {
     if (process.env.DEV !== "true") {
@@ -37,17 +36,14 @@ async function clearDatabase(): Promise<void> {
     validateEnvironment();
 
     await initializeDatabase();
-    await mongo.connect();
 
     try {
         await clearPostgres();
 
-        await mongo.getDatabase().dropDatabase();
 
         console.log("🧹 MongoDB limpo.");
         console.log("🎉 Todas as bases foram limpas.");
     } finally {
-        await mongo.close();
         await AppDataSource.destroy();
     }
 }
