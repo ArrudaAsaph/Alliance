@@ -1,0 +1,28 @@
+FROM mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm
+
+RUN apt-get update \
+  && export DEBIAN_FRONTEND=noninteractive \
+  && apt-get install -y --no-install-recommends postgresql-client sudo openssh-client \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN id -u vscode 2>/dev/null || (\
+    groupadd -g 1000 vscode && \
+    useradd -m -u 1000 -g 1000 -d /workspaces -s /bin/bash vscode && \
+    mkdir -p /workspaces && \
+    chown vscode /workspaces) \
+  && usermod -aG sudo vscode \
+  && echo "vscode ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+ENV TERM=xterm-256color \
+    COLORTERM=truecolor \
+    FORCE_COLOR=1
+
+RUN echo 'export TERM=xterm-256color' >> /workspaces/.bashrc \
+  && echo 'export COLORTERM=truecolor' >> /workspaces/.bashrc \
+  && echo 'export FORCE_COLOR=1' >> /workspaces/.bashrc \
+  && echo 'alias ls="ls --color=auto"' >> /workspaces/.bashrc \
+  && echo 'alias grep="grep --color=auto"' >> /workspaces/.bashrc \
+  && chown vscode /workspaces/.bashrc
+
+USER vscode

@@ -5,6 +5,7 @@ declare global {
         interface Request {
             /** Usuário autenticado, carregado uma única vez pelo AuthMiddleware. */
             user?: User;
+            requestId?: string;
         }
     }
 }

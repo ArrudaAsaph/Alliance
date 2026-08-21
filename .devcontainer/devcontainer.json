@@ -1,0 +1,27 @@
+{
+  "name": "TypeScript & PostgreSQL",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "forwardPorts": [3001, 5432],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "ms-azuretools.vscode-docker",
+        "cweijan.vscode-postgresql-client2",
+        "github.vscode-github-actions",
+        "redhat.vscode-yaml"
+      ],
+      "settings": {
+        "terminal.integrated.env.linux": {
+          "TERM": "xterm-256color",
+          "COLORTERM": "truecolor",
+          "FORCE_COLOR": "1"
+        }
+      }
+    }
+  },
+  "postCreateCommand": "cd api && npm ci"
+}
