@@ -8,6 +8,7 @@
         "dev": "nodemon --watch src --ext ts --exec tsx src/server.ts",
         "compile": "tsc --noEmit",
         "db:clear": "tsx src/configs/scripts/clear-database.ts",
+        "db:seed": "tsx src/configs/scripts/seed.ts",
         "test": "node --import tsx --test src/tests/**/*.test.ts",
         "start": "tsx src/server.ts"
     },

@@ -38,6 +38,16 @@ export class UserService {
         return findUser;
     }
 
+    async findAll(user: User): Promise<User[]> {
+        this.securityService.needBeAdmin(user, 'user', 'findAll')
+        const users = await this.userRepository.findAll();
+        if (users.length == 0) {
+            AppError.internal('user', 'findAll')
+        }
+
+        return users;
+    }
+
     async update(user: User, changes: UpdateUserDTO): Promise<User> {
         if (Object.prototype.hasOwnProperty.call(changes, "password")) {
             AppError.badRequest(

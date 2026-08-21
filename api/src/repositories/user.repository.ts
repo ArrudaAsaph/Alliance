@@ -59,6 +59,14 @@ export default class UserRepository {
         return user;
     }
 
+    async findAll(): Promise<User[]> {
+        return await this.userRepository.find({
+            relations: {
+                person: true
+            }
+        })
+    }
+
     async delete(id: string): Promise<void> {
         await this.userRepository.delete(id);
     }
