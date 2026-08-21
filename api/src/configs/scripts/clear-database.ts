@@ -1,6 +1,7 @@
-import { AppDataSource,initializeDatabase } from "../data-base";
+import { pathToFileURL } from "node:url";
+import { AppDataSource, initializeDatabase } from "../data-base";
 
-function validateEnvironment(): void {
+export function validateEnvironment(): void {
     if (process.env.DEV !== "true") {
         throw new Error(
             'Operação bloqueada. Para limpar o banco, defina DEV="true" no ambiente.'
@@ -8,7 +9,7 @@ function validateEnvironment(): void {
     }
 }
 
-async function clearPostgres(): Promise<void> {
+export async function clearPostgres(): Promise<void> {
     const tables = await AppDataSource.query(`
         SELECT tablename
         FROM pg_tables
@@ -32,23 +33,28 @@ async function clearPostgres(): Promise<void> {
     console.log("🧹 PostgreSQL limpo.");
 }
 
-async function clearDatabase(): Promise<void> {
+export async function clearDatabase(options: { destroyConnection?: boolean } = {}): Promise<void> {
     validateEnvironment();
 
     await initializeDatabase();
 
     try {
         await clearPostgres();
-
-
-        console.log("🧹 MongoDB limpo.");
         console.log("🎉 Todas as bases foram limpas.");
     } finally {
-        await AppDataSource.destroy();
+        if (options.destroyConnection !== false && AppDataSource.isInitialized) {
+            await AppDataSource.destroy();
+        }
     }
 }
 
-clearDatabase().catch((error: unknown) => {
-    console.error("❌ Erro ao limpar banco:", error);
-    process.exitCode = 1;
-});
+async function main(): Promise<void> {
+    await clearDatabase();
+}
+
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+    main().catch((error: unknown) => {
+        console.error("❌ Erro ao limpar banco:", error);
+        process.exitCode = 1;
+    });
+}
