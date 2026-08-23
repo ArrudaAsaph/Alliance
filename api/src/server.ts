@@ -4,7 +4,7 @@ dotenv.config()
 
 import app from "./app"
 
-const PORT: number = parseInt(`${process.env.PORT}`)
+const PORT: number = Number.parseInt(process.env.PORT ?? "3000", 10)
 
 app.listen(PORT, () => {
     const now = new Date().toLocaleString("pt-BR");
