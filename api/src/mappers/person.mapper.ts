@@ -7,9 +7,9 @@ import { UserMapper } from "./user.mapper";
 export default class PersonMapper {
     static toEntity(dto: PersonInterface): Person {
         const person = new Person()
-        person.firstName = dto.firstName;
-        person.lastName = dto.lastName;
-        person.birthday = dto.birthday;
+        if (dto.firstName !== undefined) person.firstName = dto.firstName;
+        if (dto.lastName !== undefined) person.lastName = dto.lastName;
+        if (dto.birthday !== undefined) person.birthday = dto.birthday;
         return person;
     }
 
@@ -33,5 +33,13 @@ export default class PersonMapper {
             lastName: person.lastName,
             birthday: person.birthday
         }
+    }
+
+    static toSimpleReponseList(persons: Person[]): PersonSimpleResponseDTO[] {
+        return persons.map(this.toSimpleResponse);
+    }
+
+    static toResponseList(persons: Person[]): PersonResponseDTO[] {
+        return persons.map(this.toResponse);
     }
 }

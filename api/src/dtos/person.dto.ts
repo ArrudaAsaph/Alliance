@@ -1,5 +1,11 @@
 import type { UserSimpleResponseDTO } from "./user.dto";
 
+export interface UpdatePersonDTO {
+    firstName?: string;
+    lastName?: string;
+    birthday?: string | null;
+}
+
 export interface PersonResponseDTO {
     id: string
     firstName: string;
