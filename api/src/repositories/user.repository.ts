@@ -1,6 +1,7 @@
 import { AppDataSource } from "../configs/data-base";
-import type { Repository, FindOptionsWhere } from "typeorm";
+import { type Repository, type FindOptionsWhere, ILike, Between} from "typeorm";
 import { User } from "../models/user.model";
+import type { UserFilters } from "../interfaces/user.interface";
 
 export default class UserRepository {
     private userRepository: Repository<User>
@@ -47,24 +48,19 @@ export default class UserRepository {
         })
     }
 
-    async update(user: User, isLogin = false): Promise<User> {
+    async update(user: User, isLogin = false, makeAdmin = false): Promise<User> {
         if (isLogin) {
             user.lastLogin = new Date
         } else {
-            user.updatedAt = new Date();
+            if (!makeAdmin) {
+                user.updatedAt = new Date();
+            }
         }
+
 
         await this.userRepository.save(user);
 
         return user;
-    }
-
-    async findAll(): Promise<User[]> {
-        return await this.userRepository.find({
-            relations: {
-                person: true
-            }
-        })
     }
 
     async delete(id: string): Promise<void> {
@@ -74,5 +70,53 @@ export default class UserRepository {
     // ==================
     // ADMIN
     // ==================
+
+    async find(filters: UserFilters): Promise<User[]> {
+        const where: FindOptionsWhere<User> = {};
+
+        if (filters.id) {
+            where.id =  filters.id;
+        }
+
+        if (filters.username) {
+            where.username = ILike(`%${filters.username}%`);
+        }
+
+        if (filters.email) {
+            where.email = ILike(`%${filters.email}%`);
+        }
+
+        if (filters.createdAtFrom || filters.createdAtTo) {
+            where.createdAt = Between(
+                filters.createdAtFrom ?? new Date("1900-01-01"),
+                filters.createdAtTo ?? new Date("9999-12-31")
+            );
+        }
+
+        if (filters.updatedAtFrom || filters.updatedAtTo) {
+            where.updatedAt = Between(
+                filters.updatedAtFrom ?? new Date("1900-01-01"),
+                filters.updatedAtTo ?? new Date("9999-12-31")
+            );
+        }
+
+        if (filters.lastLoginFrom || filters.lastLoginTo) {
+            where.lastLogin = Between(
+                filters.lastLoginFrom ?? new Date("1900-01-01"),
+                filters.lastLoginTo ?? new Date("9999-12-31")
+            );
+        }
+
+        if (filters.isAdmin !== undefined) {
+            where.isAdmin = filters.isAdmin;
+        }
+
+        return this.userRepository.find({
+            where,
+            relations: {
+                person: true,
+            },
+        });
+    }
     
 }

@@ -38,7 +38,15 @@ export default class AuthMiddleware {
                 );
             }
 
-            req.user = await UserService.findById(verifiedPayload.id);
+            const user = await UserService.findById(verifiedPayload.id);
+            if (!user) {
+                AppError.unauthorized(
+                    'user',
+                    'authenticate',
+                    'token não encontrado ou inválido'
+                );
+            }
+            req.user = user;
             next();
         } catch(error) {
             const jwtError = error as { name?: string } | null;

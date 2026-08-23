@@ -4,6 +4,8 @@ import SecurityService from "./security.service";
 import { AppError } from "../errors/error";
 import { Validator } from "../utils/validator.utils";
 import type { UpdateUserDTO } from "../dtos/user.dto";
+import type { UserFilters } from "../interfaces/user.interface";
+import PersonService  from "./person.service";
 
 export class UserService {
     readonly  entity: string = 'UserService'
@@ -25,7 +27,13 @@ export class UserService {
         return this.userRepository.create(user);
     }
 
-    async findById(id: string): Promise<User> {
+    async findById(id: string): Promise<User | null> {
+        this.validateId(id);
+        const findUser = await this.userRepository.findById(id);
+        return findUser;
+    }
+
+    async findUserById(user: User, id: string): Promise<User> {
         this.validateId(id);
         const findUser = await this.userRepository.findById(id);
         if (!findUser) {
@@ -35,14 +43,21 @@ export class UserService {
                 `Usuário de id ${id} não encontrado`, 
                 );
         }
+
+        if (!user.isAdmin) {
+            if (findUser.id !== user.id) {
+                AppError.unauthorized('user','findById','Usuário sem permissão')
+            }
+        }
         return findUser;
+
     }
 
-    async findAll(user: User): Promise<User[]> {
-        this.securityService.needBeAdmin(user, 'user', 'findAll')
-        const users = await this.userRepository.findAll();
+    async find(user: User, filters: UserFilters): Promise<User[]> {
+        this.securityService.needBeAdmin(user, 'user', 'find')
+        const users = await this.userRepository.find(filters);
         if (users.length == 0) {
-            AppError.internal('user', 'findAll')
+            AppError.notFound('user', 'find', 'Usuários não encontrados')
         }
 
         return users;
@@ -97,9 +112,9 @@ export class UserService {
     }
 
     async delete(user: User, password: string): Promise<void> {
-        const findUser = await this.findById(user.id);
-
-        const isOnlyUser = this.securityService.verify(password, findUser.password);
+        const findUser = await this.findUserById(user, user.id);
+        const isOnlyUser = await this.securityService.verify(password, findUser.password);
+        console.log(isOnlyUser)
 
         if (!isOnlyUser) {
             AppError.unauthorized(
@@ -109,7 +124,42 @@ export class UserService {
             );
         }
 
+        await PersonService.delete(user.person)
         await this.userRepository.delete(user.id);
+
+        return;
+    }
+
+    async makeUserAdmin(user: User, id: string, password: string) {
+        this.securityService.needBeAdmin(user,'user', 'makeUserAdmin');
+
+        let findUser = await this.findUserById(user, id);
+        const isOnlyUser = await this.securityService.verify(password, user.password);
+       
+        if (!isOnlyUser) {
+            AppError.unauthorized(
+                'user',
+                'makeUserAdmin',
+                'Usuário não encontrado ou senha inválida.'
+            );
+        }
+
+        if (findUser.isAdmin) {
+            AppError.conflict(
+               'user',
+                'makeUserAdmin',
+                'Usuário já é um administrador'
+
+            )
+        }
+
+        findUser.isAdmin = true;
+
+        await this.userRepository.update(findUser, false, true);
+
+        console.log(findUser);
+        return findUser;
+        
     }
 
     // =========================

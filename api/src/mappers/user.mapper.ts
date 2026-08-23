@@ -51,4 +51,8 @@ export class UserMapper {
     static toSimpleResponseList(users: User[]): UserSimpleResponseDTO[] {
         return users.map(this.toSimpleResponse);
     }
+
+    static toResponseList(users: User[]): UserResponseDTO[] {
+        return users.map(this.toResponse);
+    }
 }
