@@ -16,14 +16,17 @@ app.use(helmet());
 
 app.use(express.json());
 
-app.use("/health", (_req, res) => {
+const healthHandler = (_req: express.Request, res: express.Response) => {
     res.status(200).json({
         success: true,
         status: "UP",
         timestamp: new Date().toISOString(),
         uptime: process.uptime()
     });
-});
+};
+
+app.get("/health", healthHandler);
+app.get("/api/v1/health", healthHandler);
 
 app.use('/api/v1',router);
 

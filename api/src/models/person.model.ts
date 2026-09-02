@@ -11,6 +11,7 @@ import {
 } from "typeorm";
 import { User } from "./user.model";
 import { AppError } from "../errors/error";
+import { Family } from "./family.model";
 
 @Entity('persons')
 export class Person {
@@ -45,6 +46,23 @@ export class Person {
     @OneToOne(() => User, user => user.person)
     @JoinColumn({ name: "user_id" })
     user: User;
+
+    @OneToMany(() => Family, family => family.createdBy)
+    createdFamilies: Family[];
+
+    @ManyToMany(() => Family, family => family.members, { nullable: true})
+    @JoinTable({
+    name: "person_families",
+    joinColumn: {
+        name: "person_id",
+        referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+        name: "family_id",
+        referencedColumnName: "id",
+    },
+    })
+    families: Family[];
 
     @Column({ name: "updated_at", type: "timestamp", nullable: true })
     updatedAt: Date | null;

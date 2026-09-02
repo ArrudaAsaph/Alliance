@@ -84,6 +84,16 @@ export class User {
         return this.isAdmin === true;
     }
 
+    requirePerson(entity: string, action: string) {
+        if (!this.person) {
+            AppError.unprocessable(
+                entity,
+                action,
+                'Usuário não possui pessoa.'
+            )
+        }
+    }
+
     // =========================
     // HELPERS 
     // =========================
