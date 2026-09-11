@@ -108,19 +108,25 @@ export default class SecurityService {
     }
 
     generateToken(payload: object): string {
-        return jwt.sign(payload,this.secretKeyJwt,{ expiresIn: this.expiresInJwt! })
+        return jwt.sign(payload, this.secretKeyJwt, {
+            algorithm: "HS256",
+            expiresIn: this.expiresInJwt,
+        });
     }
 
     generateRefreshToken(payload: object): string {
         return jwt.sign(
             payload,
             this.refreshSecret,
-            { expiresIn: this.refreshExpires! }
+            {
+                algorithm: "HS256",
+                expiresIn: this.refreshExpires,
+            }
         );
     }
 
     verifyToken(token: string) {
-        return jwt.verify(token, this.secretKeyJwt)
+        return jwt.verify(token, this.secretKeyJwt, { algorithms: ["HS256"] });
     }
 
     generateTokenInvite() {
