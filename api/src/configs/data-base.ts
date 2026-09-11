@@ -9,7 +9,8 @@ export const AppDataSource = new DataSource({
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD!,
     database: process.env.DB_NAME,
-    synchronize: process.env.NODE_ENV !== "production",
+    // Alterações automáticas no esquema só podem ocorrer em desenvolvimento.
+    synchronize: process.env.NODE_ENV === "development",
     entities: ["src/models/*.ts"],
     migrations: ["src/migrations/*.ts"],
     subscribers: [],
@@ -34,6 +35,6 @@ export const initializeDatabase = async () => {
             error
         );
 
-        process.exit(1);
+        throw error;
     }
 };
