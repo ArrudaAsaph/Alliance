@@ -69,8 +69,8 @@ export class AuthService {
             );
         }
         const erros: string[] = [];
-        let erroTam: string[] | null = []
-        let isEmail: boolean = Validator.isEmail(data.username)
+        let erroTam: string[] | null;
+        const isEmail = Validator.isEmail(data.username)
         let erro;
         if (!isEmail) {
             erro = Validator.required(data.username, "username");

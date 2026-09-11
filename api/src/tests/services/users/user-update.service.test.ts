@@ -58,8 +58,7 @@ test("UserService.update: deve rejeitar alteração de senha", async () => {
     const user = createValidUser();
 
     await assert.rejects(
-        () => service.update(user, { password: "novaSenha123" } as any),
+        () => service.update(user, { password: "novaSenha123" } as unknown as UpdateUserDTO),
         AppError
     );
 });
-

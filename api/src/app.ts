@@ -28,6 +28,7 @@ app.use("/health", (_req, res) => {
 app.use('/api/v1',router);
 
 app.use((err: unknown, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+    void _next;
     if (err instanceof AppError) {
         console.error(`[AppError] ${err.entity}.${err.action}: ${err.message}`, err.internal ?? err.data);
 

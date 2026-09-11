@@ -4,10 +4,7 @@ import {
   Column,
   CreateDateColumn,
   OneToOne,
-  OneToMany,
-  JoinTable,
   JoinColumn,
-  ManyToMany
 } from "typeorm";
 import { User } from "./user.model";
 import { AppError } from "../errors/error";

@@ -1,5 +1,5 @@
 import { AppDataSource } from "../configs/data-base";
-import type { Repository, FindOptionsWhere } from "typeorm";
+import type { Repository } from "typeorm";
 import { User } from "../models/user.model";
 
 export default class UserRepository {
