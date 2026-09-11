@@ -1,5 +1,4 @@
-import type { FindOptionsWhere, Repository } from "typeorm";
-import { Between, ILike } from "typeorm";
+import type { Repository } from "typeorm";
 import { Person } from "../models/person.model";
 import { AppDataSource } from "../configs/data-base";
 

@@ -35,7 +35,7 @@ export default class UserController {
     static async findAll(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const users = await UserService.findAll(req.user)
-            let ret = UserMapper.toSimpleResponseList(users);
+            const ret = UserMapper.toSimpleResponseList(users);
             res.status(200).json({
                 success: true,
                 ...ret
