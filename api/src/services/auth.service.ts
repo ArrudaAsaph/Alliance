@@ -23,8 +23,7 @@ export class AuthService {
             AppError.badRequest (
                 'auth',
                 'login',
-                'usuário não encontrado ou senha inválida',
-                payload
+                'usuário não encontrado ou senha inválida'
             );
         }
 
@@ -34,8 +33,7 @@ export class AuthService {
             AppError.badRequest (
                 'auth',
                 'login',
-                'usuário não encontrado ou senha inválida',
-                payload
+                'usuário não encontrado ou senha inválida'
             )
         }
 

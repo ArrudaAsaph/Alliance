@@ -114,7 +114,6 @@ export class UserService {
     async delete(user: User, password: string): Promise<void> {
         const findUser = await this.findUserById(user, user.id);
         const isOnlyUser = await this.securityService.verify(password, findUser.password);
-        console.log(isOnlyUser)
 
         if (!isOnlyUser) {
             AppError.unauthorized(
@@ -157,7 +156,6 @@ export class UserService {
 
         await this.userRepository.update(findUser, false, true);
 
-        console.log(findUser);
         return findUser;
         
     }
