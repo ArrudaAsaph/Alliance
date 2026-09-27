@@ -6,6 +6,7 @@
     "type": "module",
     "scripts": {
         "dev": "nodemon --watch src --ext ts --exec tsx src/server.ts",
+        "lint": "eslint src --max-warnings 0",
         "compile": "tsc --noEmit",
         "db:clear": "tsx src/configs/scripts/clear-database.ts",
         "db:seed": "tsx src/configs/scripts/seed.ts",
@@ -46,9 +47,12 @@
         "@types/node": "^22.0.0",
         "@types/sequelize": "^4.28.20",
         "@types/validator": "^13.15.10",
+        "eslint": "^8.57.1",
+        "eslint-plugin-deprecation": "^3.0.0",
         "nodemon": "^3.1.14",
         "ts-node": "^10.9.2",
         "tsx": "^4.23.1",
-        "typescript": "^5.9.3"
+        "typescript": "^5.9.3",
+        "typescript-eslint": "^8.70.1"
     }
 }
