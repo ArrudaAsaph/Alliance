@@ -24,6 +24,7 @@ out/
 # Coverage
 coverage/
 .nyc_output/
+reports/
 
 # IDE / Editor
 .vscode/

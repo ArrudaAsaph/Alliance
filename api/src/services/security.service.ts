@@ -1,7 +1,7 @@
 import argon2 from "argon2";
 import dotenv from "dotenv";
 import jwt, { type SignOptions, type Secret } from "jsonwebtoken";
-import crypto from "crypto"
+import { randomBytes } from "node:crypto";
 import { AppError } from "../errors/error";
 
 import { User } from "../models/user.model";
@@ -124,7 +124,7 @@ export default class SecurityService {
     }
 
     generateTokenInvite() {
-        const token = crypto.randomBytes(32).toString("hex");
+        const token = randomBytes(32).toString("hex");
         return token
     }
 
