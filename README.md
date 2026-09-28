@@ -12,6 +12,7 @@ Ele ajuda usuários a registrar entradas e saídas, acompanhar metas financeiras
 - [Metas Financeiras](#metas-financeiras)
 - [Metas Compartilhadas](#metas-compartilhadas)
 - [Análises Financeiras](#análises-financeiras)
+- [Dependências e segurança](#dependências-e-segurança)
 
 
 ---
@@ -96,6 +97,13 @@ O Alliance traz um painel de análise simples:
 - Evolução das metas
 
 Tudo de forma visual, rápida e fácil de entender.
+
+## 🔐 Dependências e segurança
+
+- O Dependabot verifica semanalmente as dependências npm de `api/` e as GitHub Actions. Ele abre pull requests com atualizações, agrupando versões minor e patch.
+- O workflow OWASP Dependency-Check verifica vulnerabilidades conhecidas ao abrir pull requests, ao enviar alterações para `main` ou `develop` e toda segunda-feira. O scan falha para achados com CVSS 7 ou superior; o relatório HTML fica disponível como artefato da execução em Actions.
+- Para conferir atualizações localmente, execute `cd api && npm outdated`. Para atualizar uma dependência dentro dos limites de versão já definidos, use `npm update nome-do-pacote`, revise `package.json` e `package-lock.json` e rode `npm run lint`, `npm run typecheck`, `npm test` e `npm run build`.
+- Para considerar uma nova versão major, atualize explicitamente o pacote com `npm install nome-do-pacote@latest`, revise mudanças incompatíveis e rode as mesmas verificações antes de aceitar o pull request.
 
 ---
 
