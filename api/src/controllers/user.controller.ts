@@ -68,7 +68,7 @@ export default class UserController {
 		}
 	}
 
-	teste1()  {
+	teste1() {
 		console.log("deve quebrar");
 	}
 }
