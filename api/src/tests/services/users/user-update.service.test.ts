@@ -1,11 +1,16 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { User } from "../../../models/user.model";
 import { AppError } from "../../../errors/error";
-import { UserService } from "../../../services/user.service";
-import UserRepository from "../../../repositories/user.repository";
-import SecurityService from "../../../services/security.service";
 import type { UpdateUserDTO } from "../../../dtos/user.dto";
+import { createValidUser, createUserService } from "../../helpers/user-test.helpers";
+
+test("UserService.update: deve atualizar apenas username e email", async () => {
+    const { service } = createUserService();
+    const user = createValidUser("user-id");
+    const changes: UpdateUserDTO = {
+        username: "novo_username",
+        email: "novo@email.com",
+    };
 
 function createValidUser(): User {
 	const user = new User();
@@ -54,6 +59,8 @@ test("UserService.update: deve atualizar apenas username e email", async () => {
 });
 
 test("UserService.update: deve rejeitar alteração de senha", async () => {
+    const { service } = createUserService();
+    const user = createValidUser("user-id");
 	const { service } = createUserService();
 	const user = createValidUser();
 

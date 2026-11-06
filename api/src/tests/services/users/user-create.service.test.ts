@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { User } from "../../../models/user.model";
 import { AppError } from "../../../errors/error";
+import { createValidUser, createUserService } from "../../helpers/user-test.helpers";
 import { UserService } from "../../../services/user.service";
 import UserRepository from "../../../repositories/user.repository";
 import SecurityService from "../../../services/security.service";

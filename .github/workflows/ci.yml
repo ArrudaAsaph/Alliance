@@ -31,6 +31,9 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Detect duplicated code
+        run: npm run duplicate-check
+        
       - name: Check code formatting
         run: npm run format:check
 
