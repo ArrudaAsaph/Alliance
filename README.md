@@ -105,6 +105,12 @@ Tudo de forma visual, rápida e fácil de entender.
 - Para conferir atualizações localmente, execute `cd api && npm outdated`. Para atualizar uma dependência dentro dos limites de versão já definidos, use `npm update nome-do-pacote`, revise `package.json` e `package-lock.json` e rode `npm run lint`, `npm run typecheck`, `npm test` e `npm run build`.
 - Para considerar uma nova versão major, atualize explicitamente o pacote com `npm install nome-do-pacote@latest`, revise mudanças incompatíveis e rode as mesmas verificações antes de aceitar o pull request.
 
+## 🧹 Padrão de formatação
+
+- Os arquivos TypeScript da API seguem o Prettier, com indentação por tab e largura visual de 4 colunas.
+- Para formatar o código localmente, execute `cd api && npm run format`.
+- Para verificar a formatação sem alterar arquivos, execute `cd api && npm run format:check`. Essa verificação também roda no pipeline de CI.
+
 ---
 
 ## 🚧 Status do Projeto
