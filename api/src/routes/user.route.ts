@@ -8,5 +8,4 @@ router.get("/me", AuthMiddleware.authenticate, UserController.findMe);
 router.get("/all", AuthMiddleware.authenticate, UserController.findAll);
 router.patch("/me", AuthMiddleware.authenticate, UserController.update);
 
-
 export default router;
