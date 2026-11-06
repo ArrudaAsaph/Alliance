@@ -1,46 +1,12 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { User } from "../../../models/user.model";
 import { AppError } from "../../../errors/error";
-import { UserService } from "../../../services/user.service";
-import UserRepository from "../../../repositories/user.repository";
-import SecurityService from "../../../services/security.service";
 import type { UpdateUserDTO } from "../../../dtos/user.dto";
-
-function createValidUser(): User {
-    const user = new User();
-
-    user.id = "user-id";
-    user.username = "asaph";
-    user.email = "asaph@email.com";
-    user.password = "12345678";
-
-    return user;
-}
-
-function createUserService(overrides?: {
-    userRepository?: Partial<UserRepository>;
-    securityService?: Partial<SecurityService>;
-}) {
-    const userRepository = {
-        findByEmail: async () => null,
-        findByUsername: async () => null,
-        update: async (user: User) => user,
-        ...overrides?.userRepository,
-    } as unknown as UserRepository;
-
-    const securityService = {
-        ...overrides?.securityService,
-    } as unknown as SecurityService;
-
-    const service = new UserService(userRepository, securityService);
-
-    return { service, userRepository, securityService };
-}
+import { createValidUser, createUserService } from "../../helpers/user-test.helpers";
 
 test("UserService.update: deve atualizar apenas username e email", async () => {
     const { service } = createUserService();
-    const user = createValidUser();
+    const user = createValidUser("user-id");
     const changes: UpdateUserDTO = {
         username: "novo_username",
         email: "novo@email.com",
@@ -55,7 +21,7 @@ test("UserService.update: deve atualizar apenas username e email", async () => {
 
 test("UserService.update: deve rejeitar alteração de senha", async () => {
     const { service } = createUserService();
-    const user = createValidUser();
+    const user = createValidUser("user-id");
 
     await assert.rejects(
         () => service.update(user, { password: "novaSenha123" } as unknown as UpdateUserDTO),

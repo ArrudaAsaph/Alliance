@@ -2,40 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { User } from "../../../models/user.model";
 import { AppError } from "../../../errors/error";
-import { UserService } from "../../../services/user.service";
-import UserRepository from "../../../repositories/user.repository";
-import SecurityService from "../../../services/security.service";
-
-function createValidUser(): User {
-    const user = new User();
-
-    user.username = "asaph";
-    user.email = "asaph@email.com";
-    user.password = "12345678";
-
-    return user;
-}
-
-function createUserService(overrides?: {
-    userRepository?: Partial<UserRepository>;
-    securityService?: Partial<SecurityService>;
-}) {
-    const userRepository = {
-        findByEmail: async () => null,
-        findByUsername: async () => null,
-        create: async (user: User) => user,
-        ...overrides?.userRepository,
-    } as unknown as UserRepository;
-
-    const securityService = {
-        hash: async (password: string) => `hashed:${password}`,
-        ...overrides?.securityService,
-    } as unknown as SecurityService;
-
-    const service = new UserService(userRepository, securityService);
-
-    return { service, userRepository, securityService };
-}
+import { createValidUser, createUserService } from "../../helpers/user-test.helpers";
 
 test("UserService.create: deve criar um usuário válido", async () => {
     const { service } = createUserService();
